@@ -10,7 +10,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
+@Validated
 @RestController
 @RequestMapping(value = "api/clients")
 public class ClientController {
@@ -22,8 +24,14 @@ public class ClientController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ClientDto save(@Valid @RequestBody ClientDto clientDto){
+    public ClientDto save(@RequestBody ClientDto clientDto){
         return this.clientService.save(clientDto);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ClientDto update(@PathVariable @Positive long id, @RequestBody ClientDto clientDto){
+        return this.clientService.update(id, clientDto);
     }
 
 }

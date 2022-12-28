@@ -1,6 +1,9 @@
 package pt.ds.berifa.service;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pt.ds.berifa.domain.Client;
 import pt.ds.berifa.dto.ClientDto;
@@ -39,34 +42,47 @@ public class ClientServiceImpl implements ClientService{
     @SneakyThrows
     @Override
     public ClientDto update(long clientId, ClientDto dto) {
-        this.clientRepository.findClient(dto.firstName(), dto.lastName(), dto.email())
-                .orElseThrow(() -> new ClientNotFoundException("Client already exists"));
-        return null;
+        Client client = this.clientExists(dto);
+        this.clientMapper.partialUpdate(dto, client);
+        Client save = this.clientRepository.save(client);
+        return clientMapper.toDto(save);
     }
 
     @Override
     public ClientDto findByDynamicQuery(ClientDto clientDto) {
+        BooleanExpression expression = Expressions.asBoolean(true);
+
         return null;
     }
 
     @Override
     public void block(long clientId) {
-
+        Client client = this.clientExists(clientId);
+        client.setBlock(true);
+        this.clientRepository.save(client);
     }
 
     @Override
     public void unblock(long clientId) {
-
+        Client client = this.clientExists(clientId);
+        client.setBlock(false);
+        this.clientRepository.save(client);
     }
 
     @Override
     public boolean isBlocked(long clientId) {
-        return false;
+        return this.clientExists(clientId).isBlock();
     }
 
     @SneakyThrows
     private Client clientExists(ClientDto dto) {
         return this.clientRepository.findClient(dto.firstName(), dto.lastName(), dto.email())
-                .orElseThrow(() -> new ClientNotFoundException("Unavailable"));
+                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
+    }
+
+    @SneakyThrows
+    private Client clientExists(long clientId) {
+        return this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
     }
 }

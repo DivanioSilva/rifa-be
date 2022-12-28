@@ -12,7 +12,9 @@ import pt.ds.berifa.dto.errors.ExternalErrorMessages;
 import pt.ds.berifa.exceptions.ClientAlreadyExistsException;
 import pt.ds.berifa.exceptions.ClientNotFoundException;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,17 @@ public class ControllerAdvice {
                                 .errorMessage(x.getDefaultMessage())
                                 .build())
                 .collect(Collectors.toList());
+        return ExternalErrorMessages.builder().errorMessages(errorMessages).build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ConstraintViolationException.class})
+    protected ExternalErrorMessages handleConstraintViolationError(ConstraintViolationException ex, HttpServletResponse response) throws IOException {
+        List<ExternalErrorMessage> errorMessages = ex.getConstraintViolations()
+                .stream()
+                .map(x -> ExternalErrorMessage
+                        .builder()
+                        .errorMessage(x.getMessage()).build()).collect(Collectors.toList());
         return ExternalErrorMessages.builder().errorMessages(errorMessages).build();
     }
 
