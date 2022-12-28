@@ -26,8 +26,4 @@ public class ClientController {
         return this.clientService.save(clientDto);
     }
 
-    @GetMapping
-    public int test(@RequestParam(value = "test", required = false) @NotNull @Min(1) @Max(10) int value){
-        return value;
-    }
 }
