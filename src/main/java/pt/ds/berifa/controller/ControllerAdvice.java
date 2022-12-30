@@ -1,12 +1,12 @@
 package pt.ds.berifa.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pt.ds.berifa.dto.errors.ExternalErrorMessage;
 import pt.ds.berifa.dto.errors.ExternalErrorMessages;
 import pt.ds.berifa.exceptions.ClientAlreadyExistsException;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
 
@@ -34,7 +35,9 @@ public class ControllerAdvice {
                                 .errorMessage(x.getDefaultMessage())
                                 .build())
                 .collect(Collectors.toList());
-        return ExternalErrorMessages.builder().errorMessages(errorMessages).build();
+        ExternalErrorMessages messages = ExternalErrorMessages.builder().errorMessages(errorMessages).build();
+        log.error(messages.toString());
+        return messages;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -45,19 +48,25 @@ public class ControllerAdvice {
                 .map(x -> ExternalErrorMessage
                         .builder()
                         .errorMessage(x.getMessage()).build()).collect(Collectors.toList());
-        return ExternalErrorMessages.builder().errorMessages(errorMessages).build();
+        ExternalErrorMessages messages = ExternalErrorMessages.builder().errorMessages(errorMessages).build();
+        log.error(messages.toString());
+        return messages;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ClientAlreadyExistsException.class})
     protected ExternalErrorMessage handleClientAlreadyExistsError(ClientAlreadyExistsException ex, WebRequest request){
-        return ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
+        ExternalErrorMessage message = ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
+        log.error(message.toString());
+        return message;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ClientNotFoundException.class)
     protected ExternalErrorMessage handleClientNotFoundError(ClientNotFoundException ex, WebRequest request){
-        return ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
+        ExternalErrorMessage message = ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
+        log.error(message.toString());
+        return message;
     }
 
 }
