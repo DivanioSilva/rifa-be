@@ -1,7 +1,8 @@
 package pt.ds.berifa.domain;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @MappedSuperclass

@@ -1,16 +1,12 @@
 package pt.ds.berifa.controller;
 
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pt.ds.berifa.dto.ClientDto;
 import pt.ds.berifa.service.ClientService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Validated
 @RestController

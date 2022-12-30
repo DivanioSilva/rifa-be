@@ -1,11 +1,10 @@
 package pt.ds.berifa.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Getter

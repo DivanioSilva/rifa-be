@@ -3,7 +3,6 @@ package pt.ds.berifa.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pt.ds.berifa.domain.Client;
 import pt.ds.berifa.dto.ClientDto;
