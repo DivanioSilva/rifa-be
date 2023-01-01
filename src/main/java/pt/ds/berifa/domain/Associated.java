@@ -1,6 +1,8 @@
 package pt.ds.berifa.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
@@ -11,21 +13,16 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
-@Table(name = "clients")
-public class Client extends BaseEntity{
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private boolean isBlock;
-    private String nif;
+@Table(name = "associates")
+public class Associated extends Client{
+    private String address;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Client client = (Client) o;
-        return getId() != null && Objects.equals(getId(), client.getId());
+        Associated that = (Associated) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
