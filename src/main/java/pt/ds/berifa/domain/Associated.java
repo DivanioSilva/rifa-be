@@ -14,7 +14,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "associates")
-public class Associated extends BaseEntity{
+public class Associated extends Client{
     private String address;
 
     @Override

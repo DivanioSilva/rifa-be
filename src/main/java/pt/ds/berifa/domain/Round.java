@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +22,8 @@ public class Round extends BaseEntity{
     private double price;
     @OneToMany
     private List<Bet> bets;
+    @OneToMany(mappedBy = "round")
+    private List<Bet> bet;
 
     @Override
     public boolean equals(Object o) {
@@ -34,4 +37,5 @@ public class Round extends BaseEntity{
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }
