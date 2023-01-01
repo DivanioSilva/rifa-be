@@ -14,15 +14,15 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "associates")
-public class Associated extends Client{
+public class Associated extends BaseEntity{
     private String address;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Associated that = (Associated) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Associated client = (Associated) o;
+        return getId() != null && Objects.equals(getId(), client.getId());
     }
 
     @Override
