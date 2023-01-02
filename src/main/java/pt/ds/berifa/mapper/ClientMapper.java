@@ -1,6 +1,7 @@
 package pt.ds.berifa.mapper;
 
 import org.mapstruct.*;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import pt.ds.berifa.domain.Client;
 import pt.ds.berifa.dto.ClientDto;
@@ -18,4 +19,5 @@ public interface ClientMapper {
     Client partialUpdate(ClientDto clientDto, @MappingTarget Client client);
 
     List<ClientDto> toDtos(Iterable<Client> clientRepositoryAll);
+
 }

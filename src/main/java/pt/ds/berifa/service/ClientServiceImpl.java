@@ -3,12 +3,17 @@ package pt.ds.berifa.service;
 import com.querydsl.core.BooleanBuilder;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pt.ds.berifa.domain.Client;
 import pt.ds.berifa.domain.QClient;
 import pt.ds.berifa.dto.ClientDto;
+import pt.ds.berifa.dto.ClientForQueryingDto;
 import pt.ds.berifa.exceptions.EntityAlreadyExistsException;
 import pt.ds.berifa.exceptions.EntityNotFoundException;
+import pt.ds.berifa.factory.DynamicQueriesFactory;
 import pt.ds.berifa.mapper.ClientMapper;
 import pt.ds.berifa.repository.ClientRepository;
 
@@ -65,6 +70,13 @@ public class ClientServiceImpl implements ClientService{
 
         Iterable<Client> clientRepositoryAll = this.clientRepository.findAll(expression);
         return clientMapper.toDtos(clientRepositoryAll);
+    }
+
+    @Override
+    public Page<ClientDto> findByDynamicQuery(ClientForQueryingDto dto, int pageNumber, int pageSize) {
+        final Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        final BooleanBuilder query = DynamicQueriesFactory.generateDynamicQuery(dto);
+        return this.clientRepository.findAll(query, pageable).map(c -> clientMapper.toDto(c));
     }
 
     @Override

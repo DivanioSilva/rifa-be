@@ -1,10 +1,12 @@
 package pt.ds.berifa.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pt.ds.berifa.dto.ClientDto;
+import pt.ds.berifa.dto.ClientForQueryingDto;
 import pt.ds.berifa.service.ClientService;
 
 import javax.validation.Valid;
@@ -35,6 +37,14 @@ public class ClientController {
                                           @RequestParam(required = false) String lastName,
                                           @RequestParam(required = false) String email){
         return this.clientService.findByDynamicQuery(firstName, lastName, email);
+    }
+
+    @PostMapping(value = "/search",consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<ClientDto> findByCriteria(@RequestBody ClientForQueryingDto dto,
+                                          @RequestParam(required = false) int pageNumber,
+                                          @RequestParam(required = false) int pageSize){
+        return this.clientService.findByDynamicQuery(dto, pageNumber, pageSize);
     }
 
 }
