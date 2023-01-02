@@ -18,7 +18,7 @@ public class Client extends BaseEntity{
     private String email;
     private String phoneNumber;
     private boolean isBlock;
-    private String nif;
+    private long nif;
 
     @Override
     public boolean equals(Object o) {

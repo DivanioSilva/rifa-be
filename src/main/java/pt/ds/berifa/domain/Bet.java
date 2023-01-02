@@ -20,7 +20,7 @@ public class Bet extends BaseEntity{
     private List<Prize> prize;
     @OneToOne
     @JoinColumn(name = "associated_id")
-    private Associated associated;
+    private Partner associated;
     @ManyToOne
     @JoinColumn(name = "round_id")
     private Round round;
