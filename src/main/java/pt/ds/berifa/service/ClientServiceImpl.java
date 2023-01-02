@@ -1,17 +1,19 @@
 package pt.ds.berifa.service;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.BooleanBuilder;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pt.ds.berifa.domain.Client;
+import pt.ds.berifa.domain.QClient;
 import pt.ds.berifa.dto.ClientDto;
-import pt.ds.berifa.exceptions.ClientAlreadyExistsException;
-import pt.ds.berifa.exceptions.ClientNotFoundException;
+import pt.ds.berifa.exceptions.EntityAlreadyExistsException;
+import pt.ds.berifa.exceptions.EntityNotFoundException;
 import pt.ds.berifa.mapper.ClientMapper;
 import pt.ds.berifa.repository.ClientRepository;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,7 +33,7 @@ public class ClientServiceImpl implements ClientService{
                 .findClient(dto.firstName(), dto.lastName(), dto.email());
 
         if(optionalClientSearchResult.isPresent()) {
-            throw new ClientAlreadyExistsException("Client already exists");
+            throw new EntityAlreadyExistsException("Client already exists");
         }
 
         final Client client = this.clientMapper.toEntity(dto);
@@ -49,10 +51,20 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public ClientDto findByDynamicQuery(ClientDto clientDto) {
-        BooleanExpression expression = Expressions.asBoolean(true);
+    public List<ClientDto> findByDynamicQuery(String firstName, String lastName, String email) {
+        BooleanBuilder expression = new BooleanBuilder();
+        if(!StringUtils.isBlank(firstName)){
+            expression.and(QClient.client.firstName.eq(firstName));
+        }
+        if(!StringUtils.isBlank(lastName)){
+            expression.and(QClient.client.lastName.eq(lastName));
+        }
+        if(!StringUtils.isBlank(email)){
+            expression.and(QClient.client.email.eq(email));
+        }
 
-        return null;
+        Iterable<Client> clientRepositoryAll = this.clientRepository.findAll(expression);
+        return clientMapper.toDtos(clientRepositoryAll);
     }
 
     @Override
@@ -77,12 +89,12 @@ public class ClientServiceImpl implements ClientService{
     @SneakyThrows
     private Client clientExists(ClientDto dto) {
         return this.clientRepository.findClient(dto.firstName(), dto.lastName(), dto.email())
-                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }
 
     @SneakyThrows
     private Client clientExists(long clientId) {
         return this.clientRepository.findById(clientId)
-                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
     }
 }

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import pt.ds.berifa.dto.errors.ExternalErrorMessage;
 import pt.ds.berifa.dto.errors.ExternalErrorMessages;
-import pt.ds.berifa.exceptions.ClientAlreadyExistsException;
-import pt.ds.berifa.exceptions.ClientNotFoundException;
+import pt.ds.berifa.exceptions.EntityAlreadyExistsException;
+import pt.ds.berifa.exceptions.EntityNotFoundException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
@@ -54,16 +54,16 @@ public class ControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ClientAlreadyExistsException.class})
-    protected ExternalErrorMessage handleClientAlreadyExistsError(ClientAlreadyExistsException ex, WebRequest request){
+    @ExceptionHandler({EntityAlreadyExistsException.class})
+    protected ExternalErrorMessage handleClientAlreadyExistsError(EntityAlreadyExistsException ex, WebRequest request){
         ExternalErrorMessage message = ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
         log.error(message.toString());
         return message;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ClientNotFoundException.class)
-    protected ExternalErrorMessage handleClientNotFoundError(ClientNotFoundException ex, WebRequest request){
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ExternalErrorMessage handleClientNotFoundError(EntityNotFoundException ex, WebRequest request){
         ExternalErrorMessage message = ExternalErrorMessage.builder().errorMessage(ex.getMessage()).build();
         log.error(message.toString());
         return message;

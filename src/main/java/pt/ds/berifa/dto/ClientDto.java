@@ -15,6 +15,6 @@ public record ClientDto(Long id, Date createAt, Date updateAt, String firstName,
                         @Email(message = "Malformed email")
                         String email,
                         @NotEmpty(message = "Phone number is empty") String phoneNumber,
-                        String nif,
+                        long nif,
                         boolean isBlock) implements Serializable {
 }
