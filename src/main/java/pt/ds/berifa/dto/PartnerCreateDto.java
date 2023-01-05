@@ -1,11 +1,10 @@
 package pt.ds.berifa.dto;
 
-import org.hibernate.validator.constraints.Length;
 import pt.ds.berifa.domain.Partner;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -14,11 +13,12 @@ import java.io.Serializable;
 public record PartnerCreateDto(@NotNull @NotEmpty String firstName,
                                @NotNull @NotEmpty
                                String lastName,
-                               @NotNull @NotEmpty
+                               @NotEmpty(message = "Email is empty")
+                               @Email(message = "Malformed email")
                                String email,
-                               @NotNull @NotEmpty
+                               @NotNull
+                               @NotEmpty(message = "Phone number is empty")
                                String phoneNumber,
-                               @Size()
                                long nif,
                                String address) implements Serializable {
 }

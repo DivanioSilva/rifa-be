@@ -3,11 +3,16 @@ package pt.ds.berifa.factory;
 import com.querydsl.core.BooleanBuilder;
 import org.apache.commons.lang3.StringUtils;
 import pt.ds.berifa.domain.QClient;
+import pt.ds.berifa.domain.QPartner;
 import pt.ds.berifa.dto.ClientForQueryingDto;
+import pt.ds.berifa.dto.PartnerForQueryingDto;
 
 import java.util.Objects;
 
 public class DynamicQueriesFactory {
+
+    private DynamicQueriesFactory() {
+    }
 
     public static BooleanBuilder generateDynamicQuery(ClientForQueryingDto dto){
         BooleanBuilder expression = new BooleanBuilder();
@@ -30,6 +35,36 @@ public class DynamicQueriesFactory {
             expression.and(QClient.client.phoneNumber.eq(dto.phoneNumber()));
         }
 
+        return expression;
+    }
+
+    public static BooleanBuilder generateDynamicQuery(PartnerForQueryingDto dto){
+        BooleanBuilder expression = new BooleanBuilder();
+        if(StringUtils.isNotBlank(dto.email())){
+            expression.and(QPartner.partner.email.eq(dto.email()));
+        }
+        if(StringUtils.isNotBlank(dto.address())){
+            expression.and(QPartner.partner.address.eq(dto.address()));
+        }
+        if(StringUtils.isNotBlank(dto.phoneNumber())){
+            expression.and(QPartner.partner.phoneNumber.eq(dto.phoneNumber()));
+        }
+        if(StringUtils.isNotBlank(dto.firstName())){
+            expression.and(QPartner.partner.firstName.eq(dto.firstName()));
+        }
+
+        if(StringUtils.isNotBlank(dto.lastName())){
+            expression.and(QPartner.partner.lastName.eq(dto.lastName()));
+        }
+        if(dto.nif() <= 0){
+            expression.and(QPartner.partner.nif.eq(dto.nif()));
+        }
+        if(dto.id() != null && dto.id() <= 0){
+            expression.and(QPartner.partner.id.eq(dto.id()));
+        }
+        if(StringUtils.isNotBlank(dto.address())){
+            expression.and(QPartner.partner.address.eq(dto.address()));
+        }
         return expression;
     }
 }

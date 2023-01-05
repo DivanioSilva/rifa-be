@@ -76,7 +76,7 @@ public class ClientServiceImpl implements ClientService{
     public Page<ClientDto> findByDynamicQuery(ClientForQueryingDto dto, int pageNumber, int pageSize) {
         final Pageable pageable = PageRequest.of(pageNumber, pageSize);
         final BooleanBuilder query = DynamicQueriesFactory.generateDynamicQuery(dto);
-        return this.clientRepository.findAll(query, pageable).map(c -> clientMapper.toDto(c));
+        return this.clientRepository.findAll(query, pageable).map(clientMapper::toDto);
     }
 
     @Override
