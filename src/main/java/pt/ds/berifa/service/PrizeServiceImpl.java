@@ -1,12 +1,18 @@
 package pt.ds.berifa.service;
 
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pt.ds.berifa.domain.Prize;
+import pt.ds.berifa.dto.PrizeForQueryingDto;
 import pt.ds.berifa.dto.PrizeOperationsDto;
 import pt.ds.berifa.dto.PrizeResponseDto;
 import pt.ds.berifa.exceptions.EntityAlreadyExistsException;
+import pt.ds.berifa.factory.DynamicQueriesFactory;
 import pt.ds.berifa.mapper.PrizeMapper;
 import pt.ds.berifa.repository.PrizeRepository;
 
@@ -50,5 +56,13 @@ public class PrizeServiceImpl implements PrizeService{
     @Override
     public void delete(long id) {
         this.repository.deleteById(id);
+    }
+
+    @Override
+    public Page<PrizeResponseDto> findByCriteria(PrizeForQueryingDto dto, int pageNumber, int pageSize) {
+        final Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        BooleanBuilder query = DynamicQueriesFactory.generateDynamicQuery(dto);
+        return this.repository.findAll(pageable)
+                .map(this.mapper::toResponseDto);
     }
 }

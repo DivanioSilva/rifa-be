@@ -4,8 +4,10 @@ import com.querydsl.core.BooleanBuilder;
 import org.apache.commons.lang3.StringUtils;
 import pt.ds.berifa.domain.QClient;
 import pt.ds.berifa.domain.QPartner;
+import pt.ds.berifa.domain.QPrize;
 import pt.ds.berifa.dto.ClientForQueryingDto;
 import pt.ds.berifa.dto.PartnerForQueryingDto;
+import pt.ds.berifa.dto.PrizeForQueryingDto;
 
 import java.util.Objects;
 
@@ -65,6 +67,12 @@ public class DynamicQueriesFactory {
         if(StringUtils.isNotBlank(dto.address())){
             expression.and(QPartner.partner.address.eq(dto.address()));
         }
+        return expression;
+    }
+
+    public static BooleanBuilder generateDynamicQuery(PrizeForQueryingDto dto){
+        BooleanBuilder expression = new BooleanBuilder();
+        expression.and(QPrize.prize.sorteado.eq(dto.sorteado()));
         return expression;
     }
 }
