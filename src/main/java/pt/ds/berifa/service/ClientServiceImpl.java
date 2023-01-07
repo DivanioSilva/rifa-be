@@ -18,7 +18,6 @@ import pt.ds.berifa.mapper.ClientMapper;
 import pt.ds.berifa.repository.ClientRepository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
