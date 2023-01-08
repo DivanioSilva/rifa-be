@@ -3,10 +3,7 @@ package pt.ds.berifa.domain;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -14,16 +11,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name = "rounds")
 @Entity
 public class Round extends BaseEntity{
-    @OneToOne
-    @JoinColumn(name = "winner_id")
-    private Winner winner;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Prize> prizes;
     private double price;
-    @OneToMany
-    private List<Bet> bets;
-    @OneToMany(mappedBy = "round")
-    private List<Bet> bet;
+    private boolean isActive;
 
     @Override
     public boolean equals(Object o) {

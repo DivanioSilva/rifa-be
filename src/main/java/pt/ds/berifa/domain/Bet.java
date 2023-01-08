@@ -16,8 +16,6 @@ public class Bet extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    @OneToMany
-    private List<Prize> prize;
     @OneToOne
     @JoinColumn(name = "associated_id")
     private Partner associated;

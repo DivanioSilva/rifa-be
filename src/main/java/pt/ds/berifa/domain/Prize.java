@@ -19,7 +19,7 @@ public class Prize extends BaseEntity{
     private String description;
     private double price;
     private String url;
-    private boolean sorteado;
+    private boolean sorteado; // TODO: 08/01/2023 tenho dúvidas se esse campo não tem de estar no round
     @Lob
     private byte[] imageData;
 
