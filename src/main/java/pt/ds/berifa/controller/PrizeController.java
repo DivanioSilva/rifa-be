@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Validated
 @RequiredArgsConstructor
-@RequestMapping(value = "api/prize")
+@RequestMapping(value = "api/prizes")
 @RestController
 public class PrizeController {
     private final PrizeService prizeService;
@@ -44,7 +44,7 @@ public class PrizeController {
                                                    @RequestParam(required = false) Date updateAt,
                                                    @RequestParam(required = false) String type,
                                                    @RequestParam(required = false) String description,
-                                                   // TODO: 08/01/2023 tenho sempre de adicionar um valor default 
+                                                   // TODO: 08/01/2023 tenho sempre de adicionar um valor default
                                                    //@RequestParam(required = false, defaultValue = "0") double price,
                                                    @RequestParam(required = false) String url,
                                                    @RequestParam(required = false, defaultValue = "false") boolean sorteado,

@@ -33,22 +33,15 @@ public class PrizeServiceImpl implements PrizeService{
     @SneakyThrows
     @Override
     public PrizeResponseDto update(long id, PrizeOperationsDto dto) {
-        final Optional<Prize> optionalPrize = this.repository.findById(id);
-        if(optionalPrize.isEmpty()) {
-            throw new EntityAlreadyExistsException("Prize not exists");
-        }
-        final Prize prize = this.mapper.partialUpdate(dto, optionalPrize.get());
+        final Prize prizeOnDB = getPrize(id);
+        final Prize prize = this.mapper.partialUpdate(dto, prizeOnDB);
         return this.mapper.toResponseDto(this.repository.save(prize));
     }
 
     @SneakyThrows
     @Override
     public void changeState(long id, boolean isSorteado) {
-        final Optional<Prize> optionalPrize = this.repository.findById(id);
-        if(optionalPrize.isEmpty()) {
-            throw new EntityAlreadyExistsException("Prize not exists");
-        }
-        Prize prize = optionalPrize.get();
+        Prize prize = getPrize(id);
         prize.setSorteado(isSorteado);
         this.repository.save(prize);
     }
@@ -64,5 +57,13 @@ public class PrizeServiceImpl implements PrizeService{
         BooleanBuilder query = DynamicQueriesFactory.generateDynamicQuery(dto);
         return this.repository.findAll(query, pageable)
                 .map(this.mapper::toResponseDto);
+    }
+
+    private Prize getPrize(long id) throws EntityAlreadyExistsException {
+        final Optional<Prize> optionalPrize = this.repository.findById(id);
+        if(optionalPrize.isEmpty()) {
+            throw new EntityAlreadyExistsException("Prize not exists");
+        }
+        return optionalPrize.get();
     }
 }

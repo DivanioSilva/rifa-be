@@ -1,14 +1,14 @@
 
-#spring:
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/silva?autoReconnect=true&useSSL=false
-#    username: silva
-#    password: silva
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/silva?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+    username: silva
+    password: silva
 
-  #jpa:
-  #  hibernate:
-  #    ddl-auto: update
-  #  show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
 
 
 #    driver-class-name: com.mysql.cj.jdbc.Driver

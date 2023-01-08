@@ -7,6 +7,9 @@ import pt.ds.berifa.dto.PrizeForQueryingDto;
 import pt.ds.berifa.dto.PrizeResponseDto;
 import pt.ds.berifa.dto.PrizeOperationsDto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PrizeMapper {
@@ -22,4 +25,9 @@ public interface PrizeMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Prize partialUpdate(PrizeResponseDto prizeResponseDto, @MappingTarget Prize prize);
 
+    Prize toEntity1(PrizeResponseDto prizeResponseDto);
+
+    default List<Long> prizesToPrizeIds(List<Prize> prizes) {
+        return prizes.stream().map(Prize::getId).collect(Collectors.toList());
+    }
 }

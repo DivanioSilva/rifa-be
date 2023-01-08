@@ -5,9 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import pt.ds.berifa.domain.QClient;
 import pt.ds.berifa.domain.QPartner;
 import pt.ds.berifa.domain.QPrize;
+import pt.ds.berifa.domain.QRound;
 import pt.ds.berifa.dto.ClientForQueryingDto;
 import pt.ds.berifa.dto.PartnerForQueryingDto;
 import pt.ds.berifa.dto.PrizeForQueryingDto;
+import pt.ds.berifa.dto.RoundForQueryingDto;
 
 import java.util.Objects;
 
@@ -78,4 +80,17 @@ public class DynamicQueriesFactory {
         }
         return expression;
     }
+
+    public static BooleanBuilder generateDynamicQuery(RoundForQueryingDto dto){
+        BooleanBuilder expression = new BooleanBuilder();
+        expression.and(QRound.round.isActive.eq(dto.isActive()));
+        /*
+        if(StringUtils.isNotBlank(dto.price())){
+            expression.and(QPrize.prize.description.eq(dto.description()));
+        }
+         */
+        return expression;
+    }
+
+
 }
