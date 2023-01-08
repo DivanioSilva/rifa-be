@@ -73,6 +73,9 @@ public class DynamicQueriesFactory {
     public static BooleanBuilder generateDynamicQuery(PrizeForQueryingDto dto){
         BooleanBuilder expression = new BooleanBuilder();
         expression.and(QPrize.prize.sorteado.eq(dto.sorteado()));
+        if(StringUtils.isNotBlank(dto.description())){
+            expression.and(QPrize.prize.description.eq(dto.description()));
+        }
         return expression;
     }
 }

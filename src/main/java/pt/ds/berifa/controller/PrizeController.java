@@ -12,6 +12,7 @@ import pt.ds.berifa.service.PrizeService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Date;
 
 @Validated
 @RequiredArgsConstructor
@@ -37,12 +38,28 @@ public class PrizeController {
         this.prizeService.changeState(id, state);
     }
 
-    @PostMapping(value = "search", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PrizeResponseDto> findByCriteria(@RequestBody PrizeForQueryingDto dto,
-                                                 @RequestParam(required = false) int pageNumber,
-                                                 @RequestParam(required = false) int pageSize){
-        // TODO: 07/01/2023 not working yet 
+    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<PrizeResponseDto> findByCriteriaV2(@RequestParam(required = false) Long id,
+                                                   @RequestParam(required = false) Date createAt,
+                                                   @RequestParam(required = false) Date updateAt,
+                                                   @RequestParam(required = false) String type,
+                                                   @RequestParam(required = false) String description,
+                                                   // TODO: 08/01/2023 tenho sempre de adicionar um valor default 
+                                                   //@RequestParam(required = false, defaultValue = "0") double price,
+                                                   @RequestParam(required = false) String url,
+                                                   @RequestParam(required = false, defaultValue = "false") boolean sorteado,
+                                                   @RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                                   @RequestParam(required = false, defaultValue = "30") int pageSize){
+        PrizeForQueryingDto dto = PrizeForQueryingDto
+                .builder()
+                .id(id)
+                .updateAt(updateAt)
+                .createAt(createAt)
+                .type(type)
+                .description(description)
+                //.price(price)
+                .url(url)
+                .sorteado(sorteado).build();
         return this.prizeService.findByCriteria(dto, pageNumber, pageSize);
     }
 

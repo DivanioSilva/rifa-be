@@ -62,7 +62,7 @@ public class PrizeServiceImpl implements PrizeService{
     public Page<PrizeResponseDto> findByCriteria(PrizeForQueryingDto dto, int pageNumber, int pageSize) {
         final Pageable pageable = PageRequest.of(pageNumber, pageSize);
         BooleanBuilder query = DynamicQueriesFactory.generateDynamicQuery(dto);
-        return this.repository.findAll(pageable)
+        return this.repository.findAll(query, pageable)
                 .map(this.mapper::toResponseDto);
     }
 }
